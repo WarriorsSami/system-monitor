@@ -7,7 +7,7 @@ import (
 	"github.com/shirou/gopsutil/v4/mem"
 	"github.com/shirou/gopsutil/v4/net"
 	"github.com/shirou/gopsutil/v4/process"
-	"system-monitor/backend/internal/domain"
+	"system-monitor/backend/internal/domain/entities"
 )
 
 type HardwareMonitor struct {
@@ -101,8 +101,8 @@ func NewHardwareMonitor() (*HardwareMonitor, error) {
 	}, nil
 }
 
-func (h *HardwareMonitor) GetHostInfo() *domain.HostStat {
-	return domain.NewHostInfoStat(
+func (h *HardwareMonitor) GetHostInfo() *entities.HostStat {
+	return entities.NewHostInfoStat(
 		h.hostInfo.Hostname,
 		h.hostInfo.OS,
 		h.hostInfo.Platform,
@@ -110,16 +110,16 @@ func (h *HardwareMonitor) GetHostInfo() *domain.HostStat {
 		h.hostInfo.Uptime)
 }
 
-func (h *HardwareMonitor) GetUsersInfo() []*domain.UserStat {
-	var users []*domain.UserStat
+func (h *HardwareMonitor) GetUsersInfo() []*entities.UserStat {
+	var users []*entities.UserStat
 	for _, user := range h.usersInfo {
-		users = append(users, domain.NewHostUserStat(user.User, user.Terminal))
+		users = append(users, entities.NewHostUserStat(user.User, user.Terminal))
 	}
 	return users
 }
 
-func (h *HardwareMonitor) GetMemoryInfo() *domain.MemoryStat {
-	return domain.NewMemoryStat(
+func (h *HardwareMonitor) GetMemoryInfo() *entities.MemoryStat {
+	return entities.NewMemoryStat(
 		h.memoryInfo.Total,
 		h.memoryInfo.Available,
 		h.memoryInfo.Used,
@@ -127,8 +127,8 @@ func (h *HardwareMonitor) GetMemoryInfo() *domain.MemoryStat {
 		h.memoryInfo.Free)
 }
 
-func (h *HardwareMonitor) GetCPUInfo() *domain.CPUStat {
-	return domain.NewCPUStat(
+func (h *HardwareMonitor) GetCPUInfo() *entities.CPUStat {
+	return entities.NewCPUStat(
 		h.cpuInfo.ModelName,
 		h.cpuInfo.Family,
 		int32(len(h.cpuUsageInfo)),
@@ -136,11 +136,11 @@ func (h *HardwareMonitor) GetCPUInfo() *domain.CPUStat {
 		h.cpuUsageInfo)
 }
 
-func (h *HardwareMonitor) GetPartitionInfo() []*domain.PartitionStat {
-	var partitions []*domain.PartitionStat
+func (h *HardwareMonitor) GetPartitionsInfo() []*entities.PartitionStat {
+	var partitions []*entities.PartitionStat
 	for _, partition := range h.diskPartitionsInfo {
 		partitions = append(partitions,
-			domain.NewPartitionStat(
+			entities.NewPartitionStat(
 				partition.Device,
 				partition.Mountpoint,
 				partition.Fstype,
@@ -149,8 +149,8 @@ func (h *HardwareMonitor) GetPartitionInfo() []*domain.PartitionStat {
 	return partitions
 }
 
-func (h *HardwareMonitor) GetDiskInfo() *domain.DiskStat {
-	return domain.NewDiskStat(
+func (h *HardwareMonitor) GetDiskInfo() *entities.DiskStat {
+	return entities.NewDiskStat(
 		h.diskUsageInfo.Path,
 		h.diskUsageInfo.Fstype,
 		h.diskUsageInfo.Total,
@@ -159,11 +159,11 @@ func (h *HardwareMonitor) GetDiskInfo() *domain.DiskStat {
 		h.diskUsageInfo.UsedPercent)
 }
 
-func (h *HardwareMonitor) GetNetConnectionsInfo() []*domain.ConnectionStat {
-	var connections []*domain.ConnectionStat
+func (h *HardwareMonitor) GetNetConnectionsInfo() []*entities.ConnectionStat {
+	var connections []*entities.ConnectionStat
 	for _, connection := range h.netConnectionsStat {
 		connections = append(connections,
-			domain.NewConnectionStat(
+			entities.NewConnectionStat(
 				connection.Name,
 				connection.BytesSent,
 				connection.BytesRecv))
@@ -171,8 +171,8 @@ func (h *HardwareMonitor) GetNetConnectionsInfo() []*domain.ConnectionStat {
 	return connections
 }
 
-func (h *HardwareMonitor) GetProcessesInfo() []*domain.ProcessStat {
-	var processes []*domain.ProcessStat
+func (h *HardwareMonitor) GetProcessesInfo() []*entities.ProcessStat {
+	var processes []*entities.ProcessStat
 	for _, proc := range h.procsStat {
 		name, _ := proc.Name()
 		status, _ := proc.Status()
@@ -180,7 +180,7 @@ func (h *HardwareMonitor) GetProcessesInfo() []*domain.ProcessStat {
 		memoryPercent, _ := proc.MemoryPercent()
 
 		processes = append(processes,
-			domain.NewProcessStat(
+			entities.NewProcessStat(
 				proc.Pid,
 				name,
 				status[0],

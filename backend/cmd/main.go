@@ -1,10 +1,18 @@
 package main
 
-import "system-monitor/backend/internal/application"
+import (
+	"system-monitor/backend/internal/api"
+	"system-monitor/backend/internal/application"
+	"system-monitor/backend/internal/infrastructure"
+)
 
 func main() {
-	go application.HandleMonitor()
+	hm, err := infrastructure.NewHardwareMonitor()
+	if err != nil {
+		return
+	}
+	smHandler := application.NewMonitorHandler(hm)
+	server := api.NewServer(smHandler)
 
-	// block the main goroutine (this will be replaced by a web server in the future)
-	select {}
+	server.Run()
 }
