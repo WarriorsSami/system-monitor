@@ -3,11 +3,11 @@ package entities
 import "fmt"
 
 type CPUStat struct {
-	ModelName  string  `json:"modelName"`
-	Family     string  `json:"family"`
-	Cores      int32   `json:"cores"`
-	Mhz        float64 `json:"mhz"`
-	CoresUsage []float64
+	ModelName  string    `json:"model_name"`
+	Family     string    `json:"family"`
+	Cores      int32     `json:"cores"`
+	Mhz        float64   `json:"mhz"`
+	CoresUsage []float64 `json:"cores_usage"`
 }
 
 func NewCPUStat(modelName string, family string, cores int32, mhz float64, coresUsage []float64) *CPUStat {

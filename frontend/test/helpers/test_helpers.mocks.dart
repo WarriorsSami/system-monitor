@@ -7,6 +7,8 @@ import 'dart:async' as _i4;
 import 'dart:ui' as _i8;
 
 import 'package:flutter/material.dart' as _i5;
+import 'package:frontend/models/system_stat.dart' as _i12;
+import 'package:frontend/services/monitor_service.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:stacked/stacked.dart' as _i2;
 import 'package:stacked_services/src/bottom_sheet/bottom_sheet_service.dart'
@@ -574,4 +576,19 @@ class MockDialogService extends _i1.Mock implements _i9.DialogService {
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [MonitorService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMonitorService extends _i1.Mock implements _i11.MonitorService {
+  @override
+  _i4.Stream<_i12.SystemStat> dialMonitorStream() => (super.noSuchMethod(
+        Invocation.method(
+          #dialMonitorStream,
+          [],
+        ),
+        returnValue: _i4.Stream<_i12.SystemStat>.empty(),
+        returnValueForMissingStub: _i4.Stream<_i12.SystemStat>.empty(),
+      ) as _i4.Stream<_i12.SystemStat>);
 }

@@ -8,7 +8,7 @@ type SystemStat struct {
 	MemoryStat         *MemoryStat       `json:"memory_stat"`
 	CPUStat            *CPUStat          `json:"cpu_stat"`
 	DiskStat           *DiskStat         `json:"disk_stat"`
-	PartitionStat      []*PartitionStat  `json:"partition_stat"`
+	PartitionStat      []*PartitionStat  `json:"partitions_stat"`
 	NetConnectionsStat []*ConnectionStat `json:"net_connections_stat"`
 	ProcessesStat      []*ProcessStat    `json:"processes_stat"`
 }

@@ -1,36 +1,15 @@
-import 'package:frontend/app/app.bottomsheets.dart';
-import 'package:frontend/app/app.dialogs.dart';
+import 'package:dartz/dartz.dart';
 import 'package:frontend/app/app.locator.dart';
-import 'package:frontend/ui/common/app_strings.dart';
+import 'package:frontend/models/system_stat.dart';
+import 'package:frontend/services/monitor_service.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
-class HomeViewModel extends BaseViewModel {
-  final _dialogService = locator<DialogService>();
-  final _bottomSheetService = locator<BottomSheetService>();
+class HomeViewModel extends StreamViewModel<SystemStat> {
+  final _monitorService = locator<MonitorService>();
 
-  String get counterLabel => 'Counter is: $_counter';
+  Option<SystemStat> get currentSystemStat =>
+      data == null ? none() : some(data!);
 
-  int _counter = 0;
-
-  void incrementCounter() {
-    _counter++;
-    rebuildUi();
-  }
-
-  void showDialog() {
-    _dialogService.showCustomDialog(
-      variant: DialogType.infoAlert,
-      title: 'Stacked Rocks!',
-      description: 'Give stacked $_counter stars on Github',
-    );
-  }
-
-  void showBottomSheet() {
-    _bottomSheetService.showCustomSheet(
-      variant: BottomSheetType.notice,
-      title: ksHomeBottomSheetTitle,
-      description: ksHomeBottomSheetDescription,
-    );
-  }
+  @override
+  Stream<SystemStat> get stream => _monitorService.dialMonitorStream();
 }

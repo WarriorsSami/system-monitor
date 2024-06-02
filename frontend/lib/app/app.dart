@@ -1,3 +1,4 @@
+import 'package:frontend/services/monitor_service.dart';
 import 'package:frontend/ui/bottom_sheets/notice/notice_sheet.dart';
 import 'package:frontend/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:frontend/ui/views/home/home_view.dart';
@@ -22,7 +23,8 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: BottomSheetService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: RouterService),
-    // @stacked-service
+    LazySingleton(classType: MonitorService),
+// @stacked-service
   ],
   bottomsheets: [
     StackedBottomsheet(classType: NoticeSheet),
@@ -32,5 +34,6 @@ import 'package:stacked_services/stacked_services.dart';
     StackedDialog(classType: InfoAlertDialog),
     // @stacked-dialog
   ],
+  logger: StackedLogger(),
 )
 class App {}

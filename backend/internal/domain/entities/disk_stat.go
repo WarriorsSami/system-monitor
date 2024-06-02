@@ -8,7 +8,7 @@ type DiskStat struct {
 	Total       uint64  `json:"total"`
 	Free        uint64  `json:"free"`
 	Used        uint64  `json:"used"`
-	UsedPercent float64 `json:"usedPercent"`
+	UsedPercent float64 `json:"used_percent"`
 }
 
 func NewDiskStat(path, fstype string, total, free, used uint64, usedPercent float64) *DiskStat {

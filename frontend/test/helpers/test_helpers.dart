@@ -2,6 +2,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:frontend/app/app.locator.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:frontend/services/monitor_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -10,13 +11,15 @@ import 'test_helpers.mocks.dart';
   MockSpec<RouterService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<BottomSheetService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<DialogService>(onMissingStub: OnMissingStub.returnDefault),
-  // @stacked-mock-spec
+  MockSpec<MonitorService>(onMissingStub: OnMissingStub.returnDefault),
+// @stacked-mock-spec
 ])
 void registerServices() {
   getAndRegisterRouterService();
   getAndRegisterBottomSheetService();
   getAndRegisterDialogService();
-  // @stacked-mock-register
+  getAndRegisterMonitorService();
+// @stacked-mock-register
 }
 
 MockRouterService getAndRegisterRouterService() {
@@ -69,6 +72,12 @@ MockDialogService getAndRegisterDialogService() {
   return service;
 }
 
+MockMonitorService getAndRegisterMonitorService() {
+  _removeRegistrationIfExists<MonitorService>();
+  final service = MockMonitorService();
+  locator.registerSingleton<MonitorService>(service);
+  return service;
+}
 // @stacked-mock-create
 
 void _removeRegistrationIfExists<T extends Object>() {
