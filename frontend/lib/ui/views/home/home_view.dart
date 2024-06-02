@@ -1,9 +1,14 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/models/cpu_stat.dart';
 import 'package:frontend/ui/common/ui_helpers.dart';
+import 'package:frontend/ui/widgets/stats/cpu_stat_widget.dart';
+import 'package:frontend/ui/widgets/stats/disk_stat_widget.dart';
+import 'package:frontend/ui/widgets/stats/host_stat_widget.dart';
+import 'package:frontend/ui/widgets/stats/memory_stat_widget.dart';
+import 'package:frontend/ui/widgets/stats/net_connections_stat_widget.dart';
+import 'package:frontend/ui/widgets/stats/partitions_stat_widget.dart';
+import 'package:frontend/ui/widgets/stats/processes_stat_widget.dart';
+import 'package:frontend/ui/widgets/stats/user_stat_widget.dart';
 import 'package:stacked/stacked.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'home_viewmodel.dart';
 
@@ -39,8 +44,58 @@ class HomeView extends StackedView<HomeViewModel> {
                         'No data',
                         style: TextStyle(fontSize: 18),
                       ),
-                      (systemStat) =>
-                          buildCpuCoresUsageChart(systemStat.cpuStat),
+                      (systemStat) => Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  HostStatWidget(
+                                    hostStat: systemStat.hostStat,
+                                  ),
+                                  verticalSpaceMedium,
+                                  UserStatWidget(
+                                    usersStat: systemStat.usersStat,
+                                  ),
+                                  verticalSpaceMedium,
+                                ],
+                              ),
+                              horizontalSpaceMedium,
+                              NetConnectionsStatWidget(
+                                netConnectionsStat:
+                                    systemStat.netConnectionsStat,
+                              ),
+                            ],
+                          ),
+                          verticalSpaceMedium,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              MemoryStatWidget(
+                                memoryStat: systemStat.memoryStat,
+                              ),
+                              horizontalSpaceMedium,
+                              DiskStatWidget(
+                                diskStat: systemStat.diskStat,
+                              ),
+                            ],
+                          ),
+                          verticalSpaceMedium,
+                          CpuStatWidget(
+                            cpuStat: systemStat.cpuStat,
+                          ),
+                          verticalSpaceMedium,
+                          ProcessesStatWidget(
+                            processesStat: systemStat.processesStat,
+                          ),
+                          verticalSpaceMedium,
+                          PartitionsStatWidget(
+                            partitionsStat: systemStat.partitionsStat,
+                          ),
+                          verticalSpaceMedium,
+                        ],
+                      ),
                     ),
             ],
           ),
@@ -54,37 +109,4 @@ class HomeView extends StackedView<HomeViewModel> {
     BuildContext context,
   ) =>
       HomeViewModel();
-
-  Widget buildCpuCoresUsageChart(CpuStat cpuStat) {
-    return SizedBox(
-      height: 200,
-      child: SfCartesianChart(
-        plotAreaBorderWidth: 0,
-        title: const ChartTitle(
-          text: 'CPU Cores Usage',
-        ),
-        primaryXAxis: const CategoryAxis(
-          majorGridLines: MajorGridLines(width: 0),
-        ),
-        primaryYAxis: const NumericAxis(
-          axisLine: AxisLine(width: 0),
-          labelFormat: '{value}%',
-          majorTickLines: MajorTickLines(size: 0),
-        ),
-        series: <CartesianSeries<({int coreIndex, double coreUsage}), String>>[
-          ColumnSeries<({int coreIndex, double coreUsage}), String>(
-            dataSource: cpuStat.coresUsage
-                .mapIndexed(
-                  (index, coreUsage) =>
-                      (coreIndex: index, coreUsage: coreUsage),
-                )
-                .toList(),
-            xValueMapper: (data, _) => 'C${data.coreIndex}',
-            yValueMapper: (data, _) => data.coreUsage,
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
-          )
-        ],
-      ),
-    );
-  }
 }

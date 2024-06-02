@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:frontend/app/app.bottomsheets.dart';
 import 'package:frontend/app/app.dialogs.dart';
 import 'package:frontend/app/app.locator.dart';
 import 'package:frontend/app/app.router.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +25,7 @@ class MainApp extends StatelessWidget {
       builder: (_) => MaterialApp.router(
         routerDelegate: stackedRouter.delegate(),
         routeInformationParser: stackedRouter.defaultRouteParser(),
+        debugShowCheckedModeBanner: false,
       ),
     ).animate().fadeIn(
           delay: const Duration(milliseconds: 50),
